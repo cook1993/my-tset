@@ -5,7 +5,8 @@ import 'element-ui/lib/theme-chalk/index.css'
 import router from '@/router/router'
 import Less from '@/style/index.less'
 import axios from 'axios'
-
+import Qs from 'qs'
+Vue.prototype.$qs = Qs
 Vue.use(Elementui)
 Vue.use(Less)
 Vue.prototype.$http = axios
