@@ -4,6 +4,7 @@ import Login from '@/views/login'
 import home from '@/views/home'
 import welcome from '@/views/welcome'
 import article from '@/views/article'
+import NotFound from '@/views/404'
 
 Vue.use(VueRouter)
 const router = new VueRouter({
@@ -28,7 +29,13 @@ const router = new VueRouter({
           component: article
         }
       ]
+    },
+    {
+      path: '*',
+      name: 'Not',
+      component: NotFound
     }
   ]
+
 })
 export default router

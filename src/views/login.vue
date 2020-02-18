@@ -31,7 +31,7 @@ export default {
     return {
       // 表单参数
       ruleFrom: {
-        moblie: '18330679707',
+        mobile: '18330679707',
         code: '246810'
       },
       rulelogin: {
@@ -49,22 +49,21 @@ export default {
   methods: {
     loginFrom () {
       this.$refs.ruleFrom.validate(valid => {
-        // if (valid) {
-        //   this.$http
-        //     .post(
-        //       'http://ttapi.research.itcast.cn/mp/v1_0/authorizations',
-        //       this.ruleFrom
-        //     )
-        //     .then(res => {
-        //       console.log(res)
-        //       this.$router.push({ path: '/' })
-        //     })
-        //     .catch(() => {
-        //       // 错误提示
-        //       this.$message.error('用户名或验证码错误')
-        //     })
-        this.$router.push({ path: '/' })
-        // }
+        if (valid) {
+          this.$http
+            .post(
+              'http://ttapi.research.itcast.cn/mp/v1_0/authorizations',
+              this.ruleFrom
+            )
+            .then(res => {
+              console.log(res)
+              this.$router.push({ path: '/' })
+            })
+            .catch(() => {
+              // 错误提示
+              this.$message.error('用户名或验证码错误')
+            })
+        }
       })
     }
   }
