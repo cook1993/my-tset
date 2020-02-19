@@ -21,6 +21,7 @@
   </div>
 </template>
 <script>
+import store from '@/store/index'
 export default {
   data () {
     const checkPhone = (rule, value, callback) => {
@@ -34,7 +35,7 @@ export default {
         code: '246810'
       },
       rules: {
-        moblie: [
+        mobile: [
           { required: true, message: '请输入电话号', trigger: 'blur' },
           { validator: checkPhone, trigger: 'blur' }
         ],
@@ -54,7 +55,9 @@ export default {
               'http://ttapi.research.itcast.cn/mp/v1_0/authorizations', this.ruleFrom
             )
             .then(res => {
-              // console.log(res.data)
+              console.log(res.data)
+              // 存储用户信息
+              store.setUser(res)
               this.$router.push('/')
             })
             .catch(() => {
