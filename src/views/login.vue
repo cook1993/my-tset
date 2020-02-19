@@ -2,28 +2,28 @@
   <div class="container" >
      <el-card class="box-card">
        <img src="../assets/images/logo_index.png" alt="">
-       <el-form  :model="ruleFrom" class="form"  :rules=" rulelogin" ref="ruleFrom" label="left">
-          <el-form-item  prop="moblie" label="电话号">
+       <el-form  v-model="ruleFrom" class="form"  :rules="rules" ref="formLogin" label="left">
+          <el-form-item  prop="moblie">
                <el-input style="width:300px" v-model="ruleFrom.moblie"  placeholder="请输入手机号"></el-input>
         </el-form-item>
-         <el-form-item  prop="code"  label="验证码">
-            <el-input style="width:180px" v-model="ruleFrom.code" placeholder="请输入验证码"></el-input>
+         <el-form-item  prop="code">
+            <el-input style="width:180px" v-model="ruleFrom.code"></el-input>
             <el-button type="info" style="margin-left:20px;">发送信息</el-button>
          </el-form-item>
          <el-form-item>
             <el-checkbox  style="margin-left:20px;" :value="true">我已阅读并同意用户协议及隐私条款</el-checkbox>
          </el-form-item>
          <el-form-item>
-            <el-button type="primary" style="width:350px" @click="loginFrom(ruleFrom)">登录</el-button>
+            <el-button type="primary" style="width:350px" @click="loginFrom()">登录</el-button>
          </el-form-item>
        </el-form>
      </el-card>
   </div>
 </template>
 <script>
-
+import store from '@/store/index'
 export default {
-  data: function () {
+  data () {
     const checkPhone = (rule, value, callback) => {
       if (!/^1[3-9]\d{9}$/.test(value)) { return callback(new Error('手机号格式不对')) }
       callback()
@@ -31,33 +31,34 @@ export default {
     return {
       // 表单参数
       ruleFrom: {
-        mobile: '18330679707',
+        moblie: '13911111111',
         code: '246810'
       },
-      rulelogin: {
-        moblie: [
+      rules: {
+        mobile: [
           { required: true, message: '请输入电话号', trigger: 'blur' },
           { validator: checkPhone, trigger: 'blur' }
         ],
         code: [
           { required: true, message: '请输入验证码', trigger: 'blur' },
-          { length: 6 }
+          { min: 6 }
         ]
       }
     }
   },
   methods: {
     loginFrom () {
-      this.$refs.ruleFrom.validate(valid => {
+      this.$refs.formLogin.validate(valid => {
         if (valid) {
           this.$http
             .post(
-              'http://ttapi.research.itcast.cn/mp/v1_0/authorizations',
-              this.ruleFrom
+              'http://ttapi.research.itcast.cn/mp/v1_0/authorizations', this.ruleFrom
             )
             .then(res => {
-              console.log(res)
-              this.$router.push({ path: '/' })
+              console.log(res.data)
+              // 存储用户信息
+              store.setUser(res.data.data)
+              this.$router.push('/')
             })
             .catch(() => {
               // 错误提示
