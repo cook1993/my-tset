@@ -51,19 +51,19 @@
         <span>江苏传智博客科技教育有限公司</span>
       </div>
       <div style="float:right">
-           <img src="../assets/images/avatar.jpg" alt="" style="vertical-align: middle;margin-right:10px;">
-          <span>18330679707</span>
+           <img :src="photo" alt="" style="vertical-align: middle;margin-right:10px;width:50px;heigth:50px">
+          <span>{{name}}</span>
         <el-dropdown>
          <span class="el-dropdown-link">
             <i class="el-icon-arrow-down el-icon--right"></i>
          </span>
         <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>
-              <span class="el-icon-s-tools"></span>
-              个人设置</el-dropdown-item>
-            <el-dropdown-item>
-              <span class="el-icon-unlock"></span>
-              退出登录</el-dropdown-item>
+            <el-dropdown-item icon="el-icon-s-tools" @click.native="setting">
+              个人设置
+              </el-dropdown-item>
+            <el-dropdown-item icon="el-icon-unlock" @click.native="logout">
+              退出登录
+            </el-dropdown-item>
        </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -78,15 +78,35 @@
 
 </template>
 <script>
+import store from '@/store/index'
 export default {
   data () {
     return {
-      iscollapse: false
+      iscollapse: false,
+      name: '',
+      photo: ''
     }
   },
+  created () {
+    const user = store.getUser()
+    // console.log(user)
+    this.name = user.name
+    this.photo = user.photo
+  },
   methods: {
+    // 控制折叠
     change () {
       this.iscollapse = !this.iscollapse
+    },
+    // 个人设置
+    setting () {
+      this.$router.push('/setting')
+    },
+    // 退出登录
+    logout () {
+      // console.log(1)
+      store.removeUser()
+      this.$router.push('/login')
     }
   }
 }

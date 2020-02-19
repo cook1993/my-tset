@@ -4,7 +4,7 @@
        <img src="../assets/images/logo_index.png" alt="">
        <el-form  :model="ruleFrom" class="form"  :rules="rules" ref="formLogin" label="left">
           <el-form-item  prop="moblie">
-               <el-input style="width:300px" v-model="ruleFrom.moblie"  placeholder="请输入手机号"></el-input>
+               <el-input style="width:300px" v-model="ruleFrom.mobile"  placeholder="请输入手机号"></el-input>
         </el-form-item>
          <el-form-item  prop="code">
             <el-input style="width:180px" v-model="ruleFrom.code"></el-input>
@@ -48,22 +48,30 @@ export default {
   },
   methods: {
     loginFrom () {
-      this.$refs.formLogin.validate(valid => {
+      this.$refs.formLogin.validate(async valid => {
         if (valid) {
-          this.$http
-            .post(
-              'http://ttapi.research.itcast.cn/mp/v1_0/authorizations', this.ruleFrom
-            )
-            .then(res => {
-              console.log(res.data)
-              // 存储用户信息
-              store.setUser(res.data.data)
-              this.$router.push('/')
-            })
-            .catch(() => {
-              // 错误提示
-              this.$message.error('用户名或验证码错误')
-            })
+          // this.$http
+          //   .post(
+          //     'http://ttapi.research.itcast.cn/mp/v1_0/authorizations', this.ruleFrom
+          //   )
+          //   .then(res => {
+          //     console.log(res.data)
+          //     // 存储用户信息
+          //     store.setUser(res.data.data)
+          //     this.$router.push('/')
+          //   })
+          //   .catch(() => {
+          //     // 错误提示
+          //     this.$message.error('用户名或验证码错误')
+          // })
+          try {
+            const { data: { data } } = await
+            this.$http.post('authorizations', this.ruleFrom)
+            store.setUser(data)
+            this.$router.push('/')
+          } catch (e) {
+            this.$message.e('用户名或验证码错误')
+          }
         }
       })
     }

@@ -1,5 +1,6 @@
 import VueRouter from 'vue-router'
 import Vue from 'vue'
+import store from '@/store/index'
 import Login from '@/views/login'
 import home from '@/views/home'
 import welcome from '@/views/welcome'
@@ -37,5 +38,11 @@ const router = new VueRouter({
     }
   ]
 
+})
+router.beforeEach((to, from, next) => {
+  if (to.path !== '/login' && !store.getUser().token) {
+    return next('/login')
+  }
+  next()
 })
 export default router
