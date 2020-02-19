@@ -31,7 +31,7 @@ export default {
     return {
       // 表单参数
       ruleFrom: {
-        moblie: '13911111111',
+        mobile: '13911111111',
         code: '246810'
       },
       rules: {
