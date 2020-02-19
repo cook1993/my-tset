@@ -2,7 +2,7 @@
   <div class="container" >
      <el-card class="box-card">
        <img src="../assets/images/logo_index.png" alt="">
-       <el-form  v-model="ruleFrom" class="form"  :rules="rules" ref="formLogin" label="left">
+       <el-form  :model="ruleFrom" class="form"  :rules="rules" ref="formLogin" label="left">
           <el-form-item  prop="moblie">
                <el-input style="width:300px" v-model="ruleFrom.moblie"  placeholder="请输入手机号"></el-input>
         </el-form-item>
