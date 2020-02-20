@@ -4,7 +4,9 @@
        <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
        <!-- <el-breadcrumb-item>内容管理</el-breadcrumb-item> -->
        <!-- 插槽 -->
-       <slot></slot>
+       <el-breadcrumb-item>
+             <slot></slot>
+       </el-breadcrumb-item>
        </el-breadcrumb>
        </div>
 </template>

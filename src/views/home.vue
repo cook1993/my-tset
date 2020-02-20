@@ -51,7 +51,7 @@
         <span>江苏传智博客科技教育有限公司</span>
       </div>
       <div style="float:right">
-           <img :src="photo" alt="" style="vertical-align: middle;margin-right:10px;width:50px;heigth:50px">
+           <img :src="photo" alt="" style="vertical-align: middle;margin-right:10px;width:30px;heigth:30px">
           <span>{{name}}</span>
         <el-dropdown>
          <span class="el-dropdown-link">

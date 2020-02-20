@@ -35,6 +35,7 @@ axios.interceptors.response.use(function (response) {
   // 在接收响应做些什么，例如跳转到登录页
   return response
 }, function (error) {
+  // 401 用户未经认证 没有授权
   if (error.response.status === 401) {
     // this.$router.push('/login')
     router.push('/login')
