@@ -2,7 +2,7 @@
   <div class="container">
     <el-card>
        <div slot="header">
-            <my-bread>发布文章</my-bread>
+            <my-bread >{{articleId ?'编写文章':'发布文章'}}</my-bread>
         </div>
         <div>
           <el-form  :model="form" label-width="80px" label-position=left>
@@ -30,14 +30,9 @@
                      </div>
                    </div>
              </el-form-item>
-              <el-form-item label="频道:"  >
-              <el-select  placeholder="请选择"   v-model="form.channel_id">
-                    <el-option  v-for="item in channels"
-                      :key="item.id" :label="item.name"  :value="item.id">
-                     {{item.name}}
-                  </el-option>
-              </el-select>
-        </el-form-item>
+              <el-form-item label="频道:" >
+                <my-choole  v-model="form.channel_id"></my-choole>
+               </el-form-item>
         <el-form-item v-if="this.articleId">
                <el-button type="primary" @click="submit(false)">修改</el-button>
                <el-button  @click="submit(true)">存入草稿</el-button>
@@ -76,9 +71,7 @@ export default {
         },
         channel_id: null
       },
-      // 频道
-      channels: [],
-      value: '',
+
       // 文章id
       articleId: null,
       // 富文本配置
@@ -102,7 +95,6 @@ export default {
     if (this.articleId) {
       this.getArticle()
     }
-    this.getchannels()
   },
   methods: {
     // 获取指定文章
@@ -116,11 +108,7 @@ export default {
     change () {
       this.form.cover.images = []
     },
-    async getchannels () {
-      const { data: { data } } = await this.$http.get('channels')
-      // console.log(data.channels)
-      this.channels = data.channels
-    },
+
     // 修改文章
     async submit (draft) {
       await this.$http.put(`articles/${this.articleId}?draft=${draft}`, this.form)

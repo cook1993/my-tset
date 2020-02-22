@@ -16,10 +16,7 @@
          </el-radio-group>
         </el-form-item>
         <el-form-item label="频道：">
-        <el-select placeholder="请选择" v-model="value">
-           <el-option  v-for="(item,id) in filterFrom" :key=id :value="item.name" >
-          </el-option>
-         </el-select>
+        <my-choole v-model="value"></my-choole>
         </el-form-item>
       <el-form-item label="日期：">
        <div class="block">
@@ -120,8 +117,8 @@ export default {
         page: 1,
         per_page: 20
       },
-      // 文章频道
-      filterFrom: [],
+      // // 文章频道
+      // filterFrom: [],
       // 状态选则
       radio: '',
       // 下拉框的默认值
@@ -136,7 +133,7 @@ export default {
   },
   created () {
     this.getArticle()
-    this.getChannels()
+    // this.getChannels()
   },
   methods: {
     // 日期处理
@@ -159,11 +156,11 @@ export default {
       this.radio = null
     },
     // 获取下拉框数据
-    async getChannels () {
-      const { data: { data } } = await this.$http.get('channels')
-      // console.log(data.channels)
-      this.filterFrom = data.channels
-    },
+    // async getChannels () {
+    //   const { data: { data } } = await this.$http.get('channels')
+    //   // console.log(data.channels)
+    //   this.filterFrom = data.channels
+    // },
     // 获取文章列表
     async getArticle () {
       const { data: { data } } = await this.$http.get('articles', { params: this.reqParams })
