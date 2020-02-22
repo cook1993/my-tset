@@ -87,7 +87,7 @@
       <el-table-column
         label="操作">
         <template slot-scope="scope">
-         <el-button type="primary" icon="el-icon-edit" circle></el-button>
+         <el-button type="primary" icon="el-icon-edit" circle @click="getPublish(scope.row.id)"></el-button>
          <el-button type="danger" icon="el-icon-delete" circle @click="remove(scope.row.id)"></el-button>
         </template>
       </el-table-column>
@@ -185,6 +185,8 @@ export default {
     },
     // 删除文章
     remove (id) {
+      // console.log(id)
+
       // 弹出确认框 点击确认后  发删除请求  响应成功更新列表即可
       this.$confirm('亲，此操作将永久删除该文章, 是否继续?', '温馨提示', {
         confirmButtonText: '确定',
@@ -193,10 +195,15 @@ export default {
       }).then(async () => {
         // 点击确认
         await this.$http.delete(`articles/${id}`)
-        // 这两句代码没有执行  上面一句代码报错  没有抛出这个错误
+        // 这两句代码没有执行  上面一句代码报错  没有抛出这个错误id
         this.$message.success('删除文章成功')
         this.getArticles()
       }).catch(() => {})
+    },
+    // 编辑文章
+    getPublish (id) {
+      // console.log(id)
+      this.$router.push('/publish?id=' + id)
     }
   }
 }

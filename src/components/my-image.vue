@@ -79,6 +79,7 @@ export default {
       total: 100,
       imageurl: null,
       dialogImageUrl: null,
+
       header: {
         Authorization: `Bearer ${store.getUser().token}`
       },

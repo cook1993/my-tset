@@ -10,7 +10,7 @@
               <el-input v-model="form.title"></el-input >
              </el-form-item>
               <el-form-item label="内容:">
-              <quill-Editor  :options=editorOption></quill-Editor>
+              <quill-Editor  :options=editorOption v-model="form.content"></quill-Editor>
              </el-form-item>
              <el-form-item label="封面:">
                     <el-radio-group v-model="form.cover.type" @click="change">
@@ -30,18 +30,23 @@
                      </div>
                    </div>
              </el-form-item>
-              <el-form-item label="频道:">
-              <el-select  placeholder="请选择"   v-model="value">
+              <el-form-item label="频道:"  >
+              <el-select  placeholder="请选择"   v-model="form.channel_id">
                     <el-option  v-for="item in channels"
-                      :key="item.id"  :value="item.name">
+                      :key="item.id" :label="item.name"  :value="item.id">
                      {{item.name}}
                   </el-option>
               </el-select>
         </el-form-item>
-         <el-form-item >
-               <el-button type="primary">发表</el-button>
-               <el-button>存入草稿</el-button>
-             </el-form-item>
+        <el-form-item v-if="this.articleId">
+               <el-button type="primary" @click="submit(false)">修改</el-button>
+               <el-button  @click="submit(true)">存入草稿</el-button>
+        </el-form-item>
+        <el-form-item v-else>
+               <el-button type="primary" @click="update(false)">发布</el-button>
+               <el-button  @click="update(true)">存入草稿</el-button>
+        </el-form-item>
+
           </el-form>
 
         </div>
@@ -63,17 +68,19 @@ export default {
   data () {
     return {
       form: {
-        title: '',
-        content: '',
+        title: null,
+        content: null,
         cover: {
           type: 1,
           images: []
         },
-        channel_id: ''
+        channel_id: null
       },
       // 频道
       channels: [],
       value: '',
+      // 文章id
+      articleId: null,
       // 富文本配置
       editorOption: {
         placeholder: '',
@@ -91,9 +98,20 @@ export default {
     }
   },
   created () {
+    this.articleId = this.$route.query.id
+    if (this.articleId) {
+      this.getArticle()
+    }
     this.getchannels()
   },
   methods: {
+    // 获取指定文章
+    async getArticle () {
+      const { data: { data } } = await this.$http.get('articles/' + this.articleId)
+      console.log(data)
+      this.form = data
+      // console.log(this.form)
+    },
     // 当选取再次点击时清空
     change () {
       this.form.cover.images = []
@@ -102,10 +120,38 @@ export default {
       const { data: { data } } = await this.$http.get('channels')
       // console.log(data.channels)
       this.channels = data.channels
+    },
+    // 修改文章
+    async submit (draft) {
+      await this.$http.put(`articles/${this.articleId}?draft=${draft}`, this.form)
+      this.$message.success(draft ? '存为草稿' : '修改成功')
+      this.$router.push('/article')
+    },
+    // 发布文章
+    async update (draft) {
+      await this.$http.post(`articles?draft=${draft}`, this.form)
+      this.$message.success(draft ? '存为草稿' : '修改成功')
+      this.$router.push('/article')
     }
 
+  },
+  watch: {
+    // 不仅仅是data中的数据才可以去监听 $route实例的数据
+    $route () {
+      if (!this.$route.query.id) {
+        this.articleId = null
+        this.form = {
+          title: null,
+          content: null,
+          cover: {
+            type: 1,
+            images: []
+          },
+          channel_id: null
+        }
+      }
+    }
   }
-
 }
 </script>
 
