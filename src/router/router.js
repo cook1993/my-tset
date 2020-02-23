@@ -7,6 +7,7 @@ import welcome from '@/views/welcome'
 import article from '@/views/article'
 import image from '@/views/image'
 import publish from '@/views/publish'
+import setting from '@/views/setting'
 import NotFound from '@/views/404'
 
 Vue.use(VueRouter)
@@ -40,6 +41,11 @@ const router = new VueRouter({
           path: '/publish',
           name: 'publish',
           component: publish
+        },
+        {
+          path: '/setting',
+          name: 'setting',
+          component: setting
         }
       ]
     },

@@ -79,6 +79,7 @@
 </template>
 <script>
 import store from '@/store/index'
+import eventBus from '@/components/eventBus'
 export default {
   data () {
     return {
@@ -92,6 +93,13 @@ export default {
     // console.log(user)
     this.name = user.name
     this.photo = user.photo
+    // 更新
+    eventBus.$on('updataPhoto', (photo) => {
+      this.photo = photo
+    })
+    eventBus.$on('updataName', (name) => {
+      this.name = name
+    })
   },
   methods: {
     // 控制折叠
